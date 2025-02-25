@@ -1,0 +1,81 @@
+const path = require('path');
+require('dotenv').config();
+
+const config = require('config');
+const dbConfig = config.get('database');
+
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
+
+const errorController = require('./controllers/error');
+const mongoConnect = require('./util/database').mongoConnect;
+const User = require('./models/user');
+
+const setAllowAccessControl = require('./util/cors').setAllowAccessControl;
+const MONGO_CLUSTER_URI =
+  'mongodb+srv://clockhead09:HePCokS2LJThOSX3@cluster0.95uly.mongodb.net/portfolio?retryWrites=true&w=majority&appName=Cluster0';
+const LOCAL_MONGO_TESTDB_URI = `mongodb://${dbConfig.address}:${dbConfig.port}/${dbConfig.database}?`;
+
+const app = express();
+
+const corsOptions = {
+  origin: 'http://localhost:3001',
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+
+const adminRoutes = require('./routes/admin');
+const blogRoutes = require('./routes/blog');
+const themeRoutes = require('./routes/theme');
+const authRoutes = require('./routes/auth');
+
+const store = new MongoDBStore({
+  uri: LOCAL_MONGO_TESTDB_URI,
+  collection: 'sessions',
+});
+
+store.on('error', function (error) {
+  console.log(error);
+});
+
+app.use(express.json({ type: ['application/json', 'text/plain'] }));
+app.use(express.urlencoded({ extended: true }));
+app.use(
+  session({
+    secret: dbConfig.sessionSecret,
+    resave: false,
+    saveUninitialized: false,
+    store: store,
+  })
+);
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/api/1.0/admin', adminRoutes);
+app.use('/api/1.0/blog', blogRoutes);
+app.use('/api/1.0/auth', authRoutes);
+app.use('/api/1.0/themes', themeRoutes);
+
+// app.use(errorController.handleError);
+
+// mongoConnect((client) => {
+//   // console.log(client);
+//   app.listen(3001);
+// });
+
+mongoose
+  .connect(LOCAL_MONGO_TESTDB_URI)
+  .then((result) => {
+    console.log('connected, 3000');
+    app.listen(3000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+module.exports = app;
+
+// app.listen(3000);
