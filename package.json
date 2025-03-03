@@ -13,7 +13,6 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "config": "^3.3.12",
     "connect-mongodb-session": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -26,6 +25,7 @@
     "resend": "^4.1.2"
   },
   "devDependencies": {
+    "config": "^3.3.12",
     "cross-env": "^7.0.3",
     "eslint": "^9.19.0",
     "jest": "^29.7.0",
