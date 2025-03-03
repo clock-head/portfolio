@@ -3,7 +3,7 @@ const Theme = require('../models/theme');
 exports.getThemes = (req, res, next) => {
   Theme.find()
     .then((themes) => {
-      res.status(200).send(themes);
+      res.status(200).json(themes);
     })
     .catch((error) => {
       console.log(error);
@@ -33,7 +33,7 @@ exports.postAddTheme = async (req, res, next) => {
   theme
     .save()
     .then((result) => {
-      res.status(200).send(result);
+      res.status(200).json(result);
     })
     .catch((error) => {
       console.log(error);
@@ -45,7 +45,7 @@ exports.postDeleteTheme = (req, res, next) => {
   Theme.findOneAndDelete({ _id: themeId })
     .then(() => {
       console.log('DESTROYED THEME');
-      res.status(200).send('DESTROYED THEME');
+      res.status(200).json('DESTROYED THEME');
     })
     .catch((error) => console.log(error));
 };

@@ -13,6 +13,12 @@ router.get(
   articlesController.getArticles
 );
 
+router.get(
+  '/:id',
+  cors({ origin: 'http://localhost:3001' }),
+  articlesController.getArticle
+);
+
 router.post(
   '/post-comment',
   cors({

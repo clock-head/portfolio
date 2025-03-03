@@ -21,7 +21,7 @@ const passwordsDoNotMatch = (body) => {
 
 module.exports = async (req, res, next) => {
   if (passwordIsTooSimple(req.body)) {
-    return res.status(400).send({
+    return res.status(400).json({
       validationErrors: {
         password:
           'password must contain at least 1 lowercase, 1 uppercase, 1 number and 1 symbol character',
@@ -30,7 +30,7 @@ module.exports = async (req, res, next) => {
   }
 
   if (passwordsDoNotMatch(req.body)) {
-    return res.status(400).send({
+    return res.status(400).json({
       validationErrors: {
         confirmPassword: 'passwords do not match.',
       },

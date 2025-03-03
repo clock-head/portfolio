@@ -7,7 +7,7 @@ const emailIsInvalid = (body) => {
 
 module.exports = async (req, res, next) => {
   if (emailIsInvalid(req.body)) {
-    return res.status(402).send({
+    return res.status(402).json({
       validationErrors: { email: 'please enter a valid email.' },
     });
   }

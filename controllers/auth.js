@@ -1,10 +1,10 @@
 const User = require('../models/user.js');
-const { save, passwordMatches } = require('./authService');
+const { save, saveSuperUser, passwordMatches } = require('./authService');
 
 exports.postSignUp = async (req, res, next) => {
   const userDoc = await User.findOne({ email: req.body.email });
   if (userDoc) {
-    return res.status(300).send({
+    return res.status(300).json({
       validationErrors: {
         email: 'this email exists',
       },
@@ -20,12 +20,17 @@ exports.postSignIn = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
 
+  console.log(req.body);
+  console.log(email);
+
   const userDoc = await User.findOne({
     email: email,
   });
 
+  console.log(userDoc);
+
   if (!userDoc) {
-    return res.status(401).send({
+    return res.status(401).json({
       validationErrors: {
         email: 'wrong email and password combination',
       },
@@ -36,7 +41,7 @@ exports.postSignIn = async (req, res, next) => {
     .then((doMatch) => {
       // 400 => bad request error
       if (!doMatch) {
-        return res.status(401).send({
+        return res.status(401).json({
           validationErrors: {
             email: 'please try again.',
           },
@@ -44,12 +49,10 @@ exports.postSignIn = async (req, res, next) => {
       }
       req.session.isLoggedIn = true;
       req.session.user = userDoc;
-      if (userDoc.status === 1) {
-        req.session.isSuperUser = true;
-      }
+
       req.session.save((error) => {
         if (!error) {
-          res.status(200).send({
+          res.status(200).json({
             authenticationSuccess: {
               firstName: userDoc.firstName,
               lastName: userDoc.lastName,
@@ -60,7 +63,7 @@ exports.postSignIn = async (req, res, next) => {
     })
     .catch((error) => {
       // 500 >= server error
-      return res.status(501).send({
+      return res.status(501).json({
         validationErrors: {
           email: error.message,
         },
@@ -71,10 +74,37 @@ exports.postSignIn = async (req, res, next) => {
   // if code matches, sign and send JWT token to client.
 };
 
+exports.createSuperUser = async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const userDoc = await User.findOne({
+    email: email,
+  });
+
+  if (userDoc) {
+    res.status(400).json({
+      message: 'user exists',
+    });
+  }
+
+  const superUser = await saveSuperUser(req.body);
+
+  if (!superUser) {
+    res.status(400).json({
+      message: 'failed to save super user.',
+    });
+  }
+
+  res.status(200).json({
+    message: 'saved super user.',
+  });
+};
+
 exports.postLogout = async (req, res, next) => {
   req.session.destroy((error) => {
     console.log(error);
-    res.status(500).send({
+    res.status(500).json({
       serverError: {
         message: 'log out error',
       },
@@ -97,7 +127,7 @@ exports.postSendOTP = async (req, res, next) => {
 
   await sendOTPByEmail(email, otp);
 
-  return res.status(200).send({
+  return res.status(200).json({
     message: 'OTP sent',
   });
 };

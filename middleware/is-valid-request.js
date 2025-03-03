@@ -21,7 +21,7 @@ const containsWhiteSpace = (body) => {
 
 module.exports = (req, res, next) => {
   if (missingFields(req.body)) {
-    return res.status(400).send({
+    return res.status(400).json({
       validationErrors: {
         email: !req.body.email ? 'email field cannot be empty.' : null,
         password: !req.body.password ? 'password field cannot be empty.' : null,
@@ -39,7 +39,7 @@ module.exports = (req, res, next) => {
   }
 
   if (containsWhiteSpace(req.body)) {
-    return res.status(400).send({
+    return res.status(400).json({
       validationErrors: {
         email: 'email cannot contain white spaces',
       },

@@ -12,6 +12,7 @@ const productionDBConfig = {
   port: process.env.DB_PORT,
   address: process.env.DB_ADDRESS,
   sessionSecret: process.env.SESSION_SECRET,
+  resendAPIKey: process.env.RESEND_API_KEY,
 };
 const dbConfig =
   process.env.NODE_ENV === 'development'

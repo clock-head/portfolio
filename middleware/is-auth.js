@@ -1,6 +1,6 @@
 const isAuth = (req, res, next) => {
   if (!req.session.isLoggedIn) {
-    return res.status(301).send({
+    return res.status(301).json({
       authenticationErrors: {
         message: 'would you like to log in?',
       },
@@ -26,8 +26,10 @@ const isAuth = (req, res, next) => {
 };
 
 const isSuperUser = (req, res, next) => {
-  if (!req.session.isSuperUser) {
-    return res.status(301).send({
+  const isSuperUser = req.session.user.status === 1;
+
+  if (!isSuperUser) {
+    return res.status(301).json({
       authenticationErrors: {
         message: 'restricted access.',
       },

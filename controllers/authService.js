@@ -32,6 +32,28 @@ const save = async (body) => {
   return newUser;
 };
 
+saveSuperUser = async (body) => {
+  const email = body.email;
+  const password = body.password;
+  const firstName = body.firstName;
+  const lastName = body.lastName;
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+  const user = new User({
+    email: email,
+    password: hashedPassword,
+    status: 1,
+    firstName: firstName,
+    lastName: lastName,
+    role: 'Super User',
+    acquisitionChannel: ['private'],
+  });
+
+  const newUser = await user.save();
+
+  return newUser;
+};
+
 const passwordMatches = async (password, userPassword) => {
   try {
     return await bcrypt.compare(password, userPassword);
@@ -43,4 +65,4 @@ const passwordMatches = async (password, userPassword) => {
 
 const sendOTPByEmail = async (email, otp) => {};
 
-module.exports = { save, passwordMatches };
+module.exports = { save, saveSuperUser, passwordMatches };

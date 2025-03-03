@@ -21,7 +21,11 @@ exports.postAddArticle = (req, res, next) => {
     // comments: comments,
   });
 
-  console.log(article);
+  if (!article) {
+    res.status(500).json({
+      message: 'failed to save article',
+    });
+  }
 
   const response = article.save();
 
@@ -49,8 +53,17 @@ exports.getArticles = (req, res, next) => {
   // .catch((error) => console.log(error));
 };
 
-exports.getArticle = (req, res, next) => {
-  Article.fetchOne(req.body.timeStamp, (article) => {
-    res.send(article);
+exports.getArticle = async (req, res, next) => {
+  const articleId = req.params.id;
+
+  const article = await Article.findOne({
+    timeStamp: articleId,
   });
+
+  if (!article) {
+    res.status(400).json({
+      message: 'article not found',
+    });
+  }
+  res.status(200).json(article);
 };
