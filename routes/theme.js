@@ -13,7 +13,7 @@ router.get(
   themesController.getThemes
 );
 
-router.post('/add-theme', themesController.postAddTheme);
+router.post('/add-theme', isSuperUser, themesController.postAddTheme);
 
 router.post('/delete-theme', isSuperUser, themesController.postDeleteTheme);
 
