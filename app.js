@@ -1,10 +1,12 @@
 const path = require('path');
 
+let config;
+
 if (process.env.NODE_ENV === 'development') {
   require('dotenv').config();
+  config = require('config');
 }
 
-const config = require('config');
 const productionDBConfig = {
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
