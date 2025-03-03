@@ -5,7 +5,7 @@ const express = require('express');
 const themesController = require('../controllers/theme');
 
 const router = express.Router();
-const isSuperUser = require('../middleware/is-auth');
+const { isAuth, isSuperUser } = require('../middleware/is-auth');
 
 router.get(
   '/get-themes',

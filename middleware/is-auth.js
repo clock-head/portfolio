@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const serverConfig = config.get('server');
 
-export function isAuth(req, res, next) {
+const isAuth = (req, res, next) => {
   if (!req.session.isLoggedIn) {
     return res.status(301).send({
       authenticationErrors: {
@@ -27,9 +27,9 @@ export function isAuth(req, res, next) {
   // }
   // req.userId = decodedToken.userId;
   // next();
-}
+};
 
-export function isSuperUser(req, res, next) {
+const isSuperUser = (req, res, next) => {
   if (!req.session.isSuperUser) {
     return res.status(301).send({
       authenticationErrors: {
@@ -38,6 +38,6 @@ export function isSuperUser(req, res, next) {
     });
   }
   next();
-}
+};
 
 module.exports = { isAuth, isSuperUser };

@@ -10,7 +10,7 @@ exports.getThemes = (req, res, next) => {
     });
 };
 
-exports.postAddTheme = (req, res, next) => {
+exports.postAddTheme = async (req, res, next) => {
   const themeName = req.body.themeName;
   const layout = req.body.layout;
   const button = req.body.button;

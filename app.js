@@ -2,7 +2,16 @@ const path = require('path');
 require('dotenv').config();
 
 const config = require('config');
-const dbConfig = config.get('database');
+const productionDBConfig = {
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
+  address: process.env.DB_ADDRESS,
+  sessionSecret: process.env.SESSION_SECRET,
+};
+const dbConfig =
+  process.env.NODE_ENV === 'development'
+    ? config.get('database')
+    : productionDBConfig;
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -15,9 +24,8 @@ const mongoConnect = require('./util/database').mongoConnect;
 const User = require('./models/user');
 
 const setAllowAccessControl = require('./util/cors').setAllowAccessControl;
-const MONGO_CLUSTER_URI =
-  'mongodb+srv://clockhead09:HePCokS2LJThOSX3@cluster0.95uly.mongodb.net/portfolio?retryWrites=true&w=majority&appName=Cluster0';
-const LOCAL_MONGO_TESTDB_URI = `mongodb://${dbConfig.address}:${dbConfig.port}/${dbConfig.database}?`;
+
+const MONGO_URI = `mongodb://${dbConfig.address}:${dbConfig.port}/${dbConfig.database}?`;
 
 const app = express();
 
@@ -33,7 +41,7 @@ const themeRoutes = require('./routes/theme');
 const authRoutes = require('./routes/auth');
 
 const store = new MongoDBStore({
-  uri: LOCAL_MONGO_TESTDB_URI,
+  uri: MONGO_URI,
   collection: 'sessions',
 });
 
@@ -67,7 +75,7 @@ app.use('/api/1.0/themes', themeRoutes);
 // });
 
 mongoose
-  .connect(LOCAL_MONGO_TESTDB_URI)
+  .connect(MONGO_URI)
   .then((result) => {
     console.log('connected, 3000');
     app.listen(3000);
