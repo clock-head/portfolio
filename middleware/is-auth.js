@@ -1,7 +1,3 @@
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const serverConfig = config.get('server');
-
 const isAuth = (req, res, next) => {
   if (!req.session.isLoggedIn) {
     return res.status(301).send({
