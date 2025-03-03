@@ -1,5 +1,8 @@
 const path = require('path');
-require('dotenv').config();
+
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config();
+}
 
 const config = require('config');
 const productionDBConfig = {
