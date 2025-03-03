@@ -1,9 +1,5 @@
 const User = require('../models/user.js');
 const { save, passwordMatches } = require('./authService');
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const bcrypt = require('bcryptjs');
-const serverConfig = config.get('server');
 
 exports.postSignUp = async (req, res, next) => {
   const userDoc = await User.findOne({ email: req.body.email });
