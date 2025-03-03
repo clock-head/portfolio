@@ -1,10 +1,8 @@
 const cors = require('cors');
 const express = require('express');
-const config = require('config');
 const isValidRequest = require('../middleware/is-valid-request');
 const isValidEmail = require('../middleware/is-valid-email');
 const isValidPassword = require('../middleware/is-valid-password');
-const clientConfig = config.get('client');
 
 const authController = require('../controllers/auth');
 
