@@ -25,7 +25,9 @@ exports.createSuperuser = async (req, res, next) => {
     });
   }
 
-  await saveSuperUser(req.body);
+  const newUser = await saveSuperUser(req.body);
+
+  res.status(200).json(newUser);
 };
 
 exports.postSignIn = async (req, res, next) => {
