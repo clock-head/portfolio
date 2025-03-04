@@ -36,7 +36,7 @@ const MONGO_URI = `mongodb://${dbConfig.address}:${dbConfig.port}/${dbConfig.dat
 const app = express();
 
 const corsOptions = {
-  origin: 'http://localhost:3001',
+  origin: process.env.FRONTEND_URL,
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
