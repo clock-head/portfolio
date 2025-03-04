@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post(
   '/sign-up',
-  cors({ origin: 'http://localhost:3001' }),
+  cors({ origin: process.env.FRONTEND_URL }),
   isValidRequest,
   isValidEmail,
   isValidPassword,
@@ -20,7 +20,7 @@ router.post(
 router.post(
   '/sign-in',
   cors({
-    origin: 'http://localhost:3001',
+    origin: process.env.FRONTEND_URL,
   }),
   authController.postSignIn
 );

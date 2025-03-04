@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post(
   '/submit-article',
-  cors({ origin: 'http://localhost:3001' }),
+  cors({ origin: process.env.FRONTEND_URL }),
 
   articlesController.postAddArticle
 );

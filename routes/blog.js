@@ -9,20 +9,20 @@ const commentsController = require('../controllers/blog/comment');
 
 router.get(
   '/',
-  cors({ origin: 'http://localhost:3001' }),
+  cors({ origin: process.env.FRONTEND_URL }),
   articlesController.getArticles
 );
 
 router.get(
   '/:id',
-  cors({ origin: 'http://localhost:3001' }),
+  cors({ origin: process.env.FRONTEND_URL }),
   articlesController.getArticle
 );
 
 router.post(
   '/post-comment',
   cors({
-    origin: 'http://localhost:3001',
+    origin: process.env.FRONTEND_URL,
   }),
   isAuth,
   commentsController.postAddComment

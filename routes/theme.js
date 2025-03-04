@@ -9,7 +9,7 @@ const { isAuth, isSuperUser } = require('../middleware/is-auth');
 
 router.get(
   '/get-themes',
-  cors({ origin: 'http://localhost:3001' }),
+  cors({ origin: process.env.FRONTEND_URL }),
   themesController.getThemes
 );
 
