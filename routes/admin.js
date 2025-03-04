@@ -2,13 +2,13 @@ const path = require('path');
 const cors = require('cors');
 const express = require('express');
 
-const articlesController = require('../controllers/blog/article');
 const authController = require('../controllers/auth');
+const articlesController = require('../controllers/blog/article');
 const { isSuperUser } = require('../middleware/is-auth');
 
 const router = express.Router();
 
-router.post('/create-superuser', authController.createSuperUser);
+router.post('/create-superuser', authController.createSuperuser);
 
 router.post(
   '/submit-article',

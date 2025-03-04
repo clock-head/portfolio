@@ -16,6 +16,18 @@ exports.postSignUp = async (req, res, next) => {
   res.redirect('/sign-in');
 };
 
+exports.createSuperuser = async (req, res, next) => {
+  const userDoc = await User.findOne({ email: req.email });
+
+  if (userDoc) {
+    return res.status(400).json({
+      message: 'user exists',
+    });
+  }
+
+  await saveSuperUser(req.body);
+};
+
 exports.postSignIn = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -72,33 +84,6 @@ exports.postSignIn = async (req, res, next) => {
   // send MFA email
   // redirect to MFA page.
   // if code matches, sign and send JWT token to client.
-};
-
-exports.createSuperUser = async (req, res, next) => {
-  const email = req.body.email;
-  const password = req.body.password;
-
-  const userDoc = await User.findOne({
-    email: email,
-  });
-
-  if (userDoc) {
-    res.status(400).json({
-      message: 'user exists',
-    });
-  }
-
-  const superUser = await saveSuperUser(req.body);
-
-  if (!superUser) {
-    res.status(400).json({
-      message: 'failed to save super user.',
-    });
-  }
-
-  res.status(200).json({
-    message: 'saved super user.',
-  });
 };
 
 exports.postLogout = async (req, res, next) => {
