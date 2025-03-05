@@ -95,10 +95,9 @@ mongoose
     }
 
     if (process.env.NODE_ENV === 'production') {
-      // https.createServer(options, app).listen(443, () => {
-      //   console.log('HTTPS Server running on port 443.');
-      // });
-      app.listen(3000);
+      https.createServer(options, app).listen(443, () => {
+        console.log('HTTPS Server running on port 443.');
+      });
     }
   })
   .catch((err) => {
