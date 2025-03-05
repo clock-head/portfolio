@@ -89,13 +89,13 @@ app.use('/api/1.0/themes', themeRoutes);
 mongoose
   .connect(MONGO_URI)
   .then((result) => {
-    console.log('connected, 3000');
     if (process.env.NODE_ENV === 'development') {
+      console.log('connected, 3000');
       app.listen(3000);
     }
 
     if (process.env.NODE_ENV === 'production') {
-      https.createServer(options, app).listen(443, () => {
+      https.createServer(app).listen(443, () => {
         console.log('HTTPS Server running on port 443.');
       });
     }
