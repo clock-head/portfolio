@@ -74,6 +74,10 @@ app.use(
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/', (req, res) => {
+  res.send('API is running.');
+});
+
 app.use('/api/1.0/admin', adminRoutes);
 app.use('/api/1.0/blog', blogRoutes);
 app.use('/api/1.0/auth', authRoutes);
