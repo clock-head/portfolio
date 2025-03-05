@@ -1,4 +1,6 @@
 const path = require('path');
+const https = require('https');
+const fs = require('fs');
 
 let config;
 
@@ -12,7 +14,6 @@ const productionDBConfig = {
   port: process.env.DB_PORT,
   address: process.env.DB_ADDRESS,
   sessionSecret: process.env.SESSION_SECRET,
-  resendAPIKey: process.env.RESEND_API_KEY,
 };
 const dbConfig =
   process.env.NODE_ENV === 'development'
@@ -34,6 +35,11 @@ const setAllowAccessControl = require('./util/cors').setAllowAccessControl;
 const MONGO_URI = `mongodb://${dbConfig.address}:${dbConfig.port}/${dbConfig.database}?`;
 
 const app = express();
+
+const options = {
+  key: fs.readFileSync('/etc/ssl/private/backend-selfsigned.key'),
+  cert: fs.readFileSync('/etc/ssl/certs/backend-selfsigned.crt'),
+};
 
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
@@ -84,7 +90,10 @@ mongoose
   .connect(MONGO_URI)
   .then((result) => {
     console.log('connected, 3000');
-    app.listen(3000);
+    //app.listen(3000);
+    https.createServer(options, app).listen(443, () => {
+      console.log('HTTPS Server running on port 443.');
+    });
   })
   .catch((err) => {
     console.log(err);
