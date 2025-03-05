@@ -36,10 +36,10 @@ const MONGO_URI = `mongodb://${dbConfig.address}:${dbConfig.port}/${dbConfig.dat
 
 const app = express();
 
-const options = {
-  key: fs.readFileSync('/etc/ssl/clockheadcerts/privkey.pem'),
-  cert: fs.readFileSync('/etc/ssl/clockheadcerts/fullchain.pem'),
-};
+// const options = {
+//   key: fs.readFileSync('/etc/ssl/clockheadcerts/privkey.pem'),
+//   cert: fs.readFileSync('/etc/ssl/clockheadcerts/fullchain.pem'),
+// };
 
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
@@ -90,10 +90,16 @@ mongoose
   .connect(MONGO_URI)
   .then((result) => {
     console.log('connected, 3000');
-    //app.listen(3000);
-    https.createServer(options, app).listen(443, () => {
-      console.log('HTTPS Server running on port 443.');
-    });
+    if (process.env.NODE_ENV === 'development') {
+      app.listen(3000);
+    }
+
+    if (process.env.NODE_ENV === 'production') {
+      // https.createServer(options, app).listen(443, () => {
+      //   console.log('HTTPS Server running on port 443.');
+      // });
+      app.listen(3000);
+    }
   })
   .catch((err) => {
     console.log(err);
