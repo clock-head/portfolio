@@ -95,7 +95,7 @@ mongoose
     }
 
     if (process.env.NODE_ENV === 'production') {
-      https.createServer(app).listen(443, () => {
+      https.createServer(options, app).listen(443, () => {
         console.log('HTTPS Server running on port 443.');
       });
     }
