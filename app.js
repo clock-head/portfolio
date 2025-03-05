@@ -36,10 +36,10 @@ const MONGO_URI = `mongodb://${dbConfig.address}:${dbConfig.port}/${dbConfig.dat
 
 const app = express();
 
-// const options = {
-//   key: fs.readFileSync('/etc/ssl/clockheadcerts/privkey.pem'),
-//   cert: fs.readFileSync('/etc/ssl/clockheadcerts/fullchain.pem'),
-// };
+const options = {
+  key: fs.readFileSync('/etc/ssl/clockheadcerts/privkey.pem'),
+  cert: fs.readFileSync('/etc/ssl/clockheadcerts/fullchain.pem'),
+};
 
 const corsOptions = {
   origin: process.env.FRONTEND_URL,
