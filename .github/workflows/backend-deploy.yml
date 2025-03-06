@@ -20,7 +20,7 @@ jobs:
 
       - name: Deploy to DigitalOcean Server
         run: |
-          ssh -i private_key -o StrictHostKeyChecking=no clockhead@167.71.205.181 << 'EOF'
+          ssh -i priv_key -o StrictHostKeyChecking=no clockhead@167.71.205.181 << 'EOF'
             cd /var/www/clockhead/portfolio
             git pull origin main
             npm install --production
