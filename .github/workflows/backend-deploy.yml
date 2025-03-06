@@ -15,12 +15,12 @@ jobs:
 
       - name: Setup SSH Key
         run: |
-          echo "${{ secrets.DO_SSH_PRIVATE_KEY }}" > priv_key
-          chmod 600 priv_key
+          echo "${{ secrets.DO_SSH_PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
 
       - name: Deploy to DigitalOcean Server
         run: |
-          ssh -i priv_key -o StrictHostKeyChecking=no clockhead@167.71.205.181 << 'EOF'
+          ssh -i private_key -o StrictHostKeyChecking=no clockhead@167.71.205.181 << 'EOF'
             cd /var/www/clockhead/portfolio
             git pull origin main
             npm install --production
