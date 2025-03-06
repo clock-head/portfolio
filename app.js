@@ -42,7 +42,7 @@ const options = {
 };
 
 const corsOptions = {
-  origin: '*',
+  origin: 'https://www.clockhead.dev',
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));

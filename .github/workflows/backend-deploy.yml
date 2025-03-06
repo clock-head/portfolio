@@ -1,0 +1,28 @@
+name: Deploy Backend to DigitalOcean
+
+on:
+  push:
+    branches:
+      - main # Deploy when pushing to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout/v3
+
+      - name: Setup SSH Key
+        run: |
+          echo "${{ secrets.DO_SSH_PRIVATE_KEY }}" > private
+          chmod 600 private_key
+
+      - name: Deploy to DigitalOcean Server
+        run: |
+          ssh -i private_key -o StrictHostKeyChecking=no clockhead@167.71.205.181 << 'EOF'
+            cd /var/www/clockhead/portfolio
+            git pull origin main
+            npm install --production
+            pm2 restart backend || pm2 start app.js --name backend
+          EOF
