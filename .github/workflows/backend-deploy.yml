@@ -15,8 +15,8 @@ jobs:
 
       - name: Setup SSH Key
         run: |
-          echo "${{ secrets.DO_SSH_PRIVATE_KEY }}" > private_key
-          chmod 600 private_key
+          echo "${{ secrets.DO_SSH_PRIVATE_KEY }}" > priv_key
+          chmod 600 priv_key
 
       - name: Deploy to DigitalOcean Server
         run: |
