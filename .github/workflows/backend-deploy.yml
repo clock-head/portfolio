@@ -15,12 +15,12 @@ jobs:
 
       - name: Setup SSH Key
         run: |
-          echo "${{ secrets.CLOCKHEAD_PRIVKEY }}" > private_key
-          chmod 600 private_key
+          echo "${{ secrets.CLOCKHEAD_PRIVKEY }}" > priv_key
+          chmod 600 priv_key
 
       - name: Deploy to AWS Server
         run: |
-          ssh -i private_key -o StrictHostKeyChecking=no clockhead@13.112.114.92 << 'EOF'
+          ssh -i priv_key -o StrictHostKeyChecking=no clockhead@13.112.114.92 << 'EOF'
             cd /var/www/clockhead/portfolio
             docker compose down
             docker compose up -d --build
