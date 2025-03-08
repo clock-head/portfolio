@@ -1,4 +1,4 @@
-name: Deploy Backend to DigitalOcean
+name: Deploy Backend to AL2
 
 on:
   push:
@@ -15,14 +15,13 @@ jobs:
 
       - name: Setup SSH Key
         run: |
-          echo "${{ secrets.DO_SSH_PRIVATE_KEY }}" > private_key
+          echo "${{ secrets.CLOCKHEAD_PRIVKEY }}" > private_key
           chmod 600 private_key
 
-      - name: Deploy to DigitalOcean Server
+      - name: Deploy to AWS Server
         run: |
-          ssh -i private_key -o StrictHostKeyChecking=no clockhead@167.71.205.181 << 'EOF'
+          ssh -i private_key -o StrictHostKeyChecking=no clockhead@13.112.114.92 << 'EOF'
             cd /var/www/clockhead/portfolio
-            git pull origin main
-            npm install --production
-            /home/clockhead/.nvm/versions/node/v20.11.1/bin/pm2 list | grep backend && /home/clockhead/.nvm/versions/node/v20.11.1/bin/pm2 restart backend || /home/clockhead/.nvm/versions/node/v20.11.1/bin/pm2 start app.js --name backend
+            docker compose down
+            docker compose up -d --build
           EOF

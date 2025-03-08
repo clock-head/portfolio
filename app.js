@@ -36,13 +36,15 @@ const MONGO_URI = `mongodb://${dbConfig.address}:${dbConfig.port}/${dbConfig.dat
 
 const app = express();
 
-const options = {
-  key: fs.readFileSync('/etc/ssl/clockheadcerts/privkey.pem'),
-  cert: fs.readFileSync('/etc/ssl/clockheadcerts/fullchain.pem'),
-};
+// const options = {
+//   key: fs.readFileSync('/etc/ssl/clockheadcerts/privkey.pem'),
+//   cert: fs.readFileSync('/etc/ssl/clockheadcerts/fullchain.pem'),
+// };
 
 const corsOptions = {
-  origin: 'https://www.clockhead.dev',
+  origin: process.env.FRONTEND_URL,
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
@@ -99,8 +101,8 @@ mongoose
     }
 
     if (process.env.NODE_ENV === 'production') {
-      https.createServer(options, app).listen(443, () => {
-        console.log('HTTPS Server running on port 443.');
+      https.createServer(app).listen(3000, () => {
+        console.log('HTTPS Server running on port 3000.');
       });
     }
   })
